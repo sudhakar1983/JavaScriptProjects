@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src= "angular.js"></script>
+</head>
+
+<body>
+
+<div data-ng-app="todo_input" data-ng-controller="todo_input_controller">
+ 
+<p>Input something in the input box:</p>
+<p>Task: <input type="text" data-ng-model="tskName"></p>
+<p>Priority: <input type="text" data-ng-model="pty"></p>
+<p>
+<button data-ng-click="addTask()">Add Task</button>
+</p>
+<p>{{tskName}}</p>
+<p>{{pty}}</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>
+			 Tasks Name
+			 </th>
+			 <th>Priority</th>
+			 <th>Status</th>
+			 <th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr   data-ng-repeat="task in tasks | orderBy:['priority','status','name']">
+			<td >{{task.name}}</td>
+			<td>{{task.priority}}
+			<td>{{task.status}}</td>
+			<td><button ng-click="remove(task)"> Mark as Complete </button>
+		</tr>
+	</tbody>
+</table>
+
+<br/>
+<br/>
+
+<table>
+	<tr>
+		<td>Statistics</td>
+		<td></td>		
+	</tr>
+	<tr>
+		<td>Total Tasks</td>
+		<td>{{tasks.length}}</td>
+	</tr>
+	<tr>
+		<td>Completed Tasks</td>
+		<td>{{completedCount}}</td>
+	</tr>	
+	
+	<tr>
+		<td>Todo Tasks</td>
+		<td>{{tasks.length - completedCount}}</td>
+	</tr>		
+</table>
+
+
+
+</div>
+
+<script type="text/javascript">
+var app = angular.module("todo_input", []);
+
+app.controller("todo_input_controller", function($scope) {
+	
+	//$scope.tskName='';
+	$scope.completedCount=0;
+	
+    $scope.tasks = [
+                    {id:1,name:'Get Milk',priority:1,"status":false},
+                    {id:2,name:'Create an angular app',priority:2,"status":false},
+                    {id:3,name:'Study Angular JS',priority:1,"status":false},
+                    {id:4,name:'Make dinner',priority:3,"status":false}
+                ];
+    
+    $scope.addTask= function(){
+    	console.log('clicked me ' + $scope.tskName);    	
+    	$scope.tasks.push({"id":$scope.tasks.length,"name":$scope.tskName,"priority":$scope.pty,"status":false});    
+    	console.log('clicked me ' + $scope.tasks);
+    };
+    
+    $scope.remove = function(task){
+    	console.log("taskId :"  + task);
+    	task.status=true;
+    	$scope.completedCount++;
+    }
+  
+});
+
+
+/*
+ * 
+   Define a JS Class  and its functions
+   use JSONObject jsonc = new JSONObject(c); to convert to json
+   
+ */
+</script>
+</body>
+</html>
